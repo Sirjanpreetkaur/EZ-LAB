@@ -1,8 +1,7 @@
-import { Routes, Route, NavLink } from "react-router-dom";
-import "./index.css";  
+import { Routes, Route, NavLink, Navigate } from "react-router-dom";
+import "./index.css";
 import TreeView from "./components/Tree/TreeView";
 import KanbanBoard from "./components/Kanban/KanbanBoard";
-
 
 function App() {
   return (
@@ -24,6 +23,7 @@ function App() {
       </div>
 
       <Routes>
+        <Route path="/" element={<Navigate to="/tree" replace />} />
         <Route path="/tree" element={<TreeView />} />
         <Route path="/kanban" element={<KanbanBoard />} />
       </Routes>
