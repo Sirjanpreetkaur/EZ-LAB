@@ -1,5 +1,5 @@
 import { Routes, Route, Link } from "react-router-dom";
-import TreeView from "./components/Tree/Tree";
+import TreeView from "./components/Tree/TreeView";
 import KanbanBoard from "./components/Kanban/Kanban";
 
 function App() {
