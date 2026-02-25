@@ -1,0 +1,78 @@
+.kanban-board {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.kanban-column {
+  flex: 1;
+  background: #f4f5f7;
+  border-radius: 8px;
+  padding: 10px;
+  min-height: 400px;
+}
+
+.column-header {
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 6px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.column-header.todo {
+  background: #1976d2;
+}
+
+.column-header.inprogress {
+  background: #f57c00;
+}
+
+.column-header.done {
+  background: #2e7d32;
+}
+
+.kanban-card {
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: grab;
+}
+
+.card-title {
+  flex: 1;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: red;
+  cursor: pointer;
+}
+
+.add-btn {
+  background: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.card-input {
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .kanban-board {
+    flex-direction: column;
+  }
+}

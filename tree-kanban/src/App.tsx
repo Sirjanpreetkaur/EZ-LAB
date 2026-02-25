@@ -1,7 +1,7 @@
 import { Routes, Route, NavLink } from "react-router-dom";
 import "./index.css";  
 import TreeView from "./components/Tree/TreeView";
-import KanbanBoard from "./components/Kanban/Kanban";
+import KanbanBoard from "./components/Kanban/KanbanBoard";
 
 
 function App() {

@@ -1,10 +1,10 @@
-export interface CardType {
+export interface Card {
   id: string;
   title: string;
 }
 
-export interface ColumnType {
+export interface Column {
   id: string;
   title: string;
-  cards: CardType[];
+  cards: Card[];
 }
