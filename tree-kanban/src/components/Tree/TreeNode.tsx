@@ -1,4 +1,10 @@
 import { useState } from "react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import {
+  SortableContext,
+  verticalListSortingStrategy
+} from "@dnd-kit/sortable";
 
 const TreeNode = ({
   node,
@@ -10,6 +16,14 @@ const TreeNode = ({
   loadChildren,
   loading
 }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: node.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition
+  };
+
   const [showInput, setShowInput] = useState(false);
   const [value, setValue] = useState("");
 
@@ -31,8 +45,8 @@ const TreeNode = ({
   const handleAdd = () => {
     if (!value.trim()) return;
     addNode(node.id, value);
-    setShowInput(false);
     setValue("");
+    setShowInput(false);
   };
 
   const handleEdit = () => {
@@ -42,8 +56,17 @@ const TreeNode = ({
   };
 
   return (
-    <li>
-      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+    <li ref={setNodeRef} style={style}>
+      <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+
+        <span
+          {...listeners}
+          {...attributes}
+          style={{ cursor: "grab", userSelect: "none", padding: "2px" }}
+        >
+          ⠿
+        </span>
+
         {notLoaded ? (
           <span onClick={toggleExpand} style={{ cursor: "pointer" }}>▶</span>
         ) : hasLoadedChildren ? (
@@ -55,7 +78,10 @@ const TreeNode = ({
         )}
 
         {!editing ? (
-          <span onDoubleClick={() => setEditing(true)} style={{ cursor: "pointer" }}>
+          <span
+            onDoubleClick={() => setEditing(true)}
+            style={{ cursor: "pointer" }}
+          >
             {node.label}
           </span>
         ) : (
@@ -72,16 +98,22 @@ const TreeNode = ({
         )}
 
         <button onClick={() => setShowInput(true)} style={{ fontSize: "10px" }}>+</button>
-        <button onClick={() => deleteNode(node.id)} style={{ fontSize: "10px", color: "red" }}>🗑</button>
+
+        <button
+          onClick={() => deleteNode(node.id)}
+          style={{ fontSize: "10px", color: "red" }}
+        >
+          🗑
+        </button>
       </div>
 
       {showInput && (
         <div style={{ marginLeft: "20px" }}>
           <input
             value={value}
+            autoFocus
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-            autoFocus
           />
           <button onClick={handleAdd}>Add</button>
           <button onClick={() => setShowInput(false)}>Cancel</button>
@@ -89,33 +121,33 @@ const TreeNode = ({
       )}
 
       {loading[node.id] && (
-        <div style={{ marginLeft: "20px", color: "gray" }}>Loading...</div>
+        <div style={{ marginLeft: "20px", color: "gray" }}>
+          Loading...
+        </div>
       )}
 
-      {hasLoadedChildren && expanded[node.id] && node.children.length > 0 && (
-        <ul style={{ marginLeft: "20px" }}>
-          {node.children.map((child) => (
-            <TreeNode
-              key={child.id}
-              node={child}
-              expanded={expanded}
-              setExpanded={setExpanded}
-              addNode={addNode}
-              deleteNode={deleteNode}
-              editNode={editNode}
-              loadChildren={loadChildren}
-              loading={loading}
-            />
-          ))}
-        </ul>
+      {hasLoadedChildren && expanded[node.id] && (
+        <SortableContext
+          items={node.children.map((c) => c.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <ul style={{ marginLeft: "20px" }}>
+            {node.children.map((child) => (
+              <TreeNode
+                key={child.id}
+                node={child}
+                expanded={expanded}
+                setExpanded={setExpanded}
+                addNode={addNode}
+                deleteNode={deleteNode}
+                editNode={editNode}
+                loadChildren={loadChildren}
+                loading={loading}
+              />
+            ))}
+          </ul>
+        </SortableContext>
       )}
-
-      {hasLoadedChildren &&
-        expanded[node.id] &&
-        node.children.length === 0 &&
-        !loading[node.id] && (
-          <div style={{ marginLeft: "20px", color: "gray" }}>No children</div>
-        )}
     </li>
   );
 };
