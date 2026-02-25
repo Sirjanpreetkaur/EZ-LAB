@@ -66,4 +66,34 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+.tabs {
+  display: flex;
+  gap: 20px;
+  padding: 16px;
+  border-bottom: 2px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.tab {
+  padding: 8px 14px;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 500;
+  color: #374151;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  background: #e5e7eb;
+}
+
+.tab.active {
+  background: #2563eb;
+  color: white;
+}
+
+.tab.active:hover {
+  background: #1d4ed8;
+}
 

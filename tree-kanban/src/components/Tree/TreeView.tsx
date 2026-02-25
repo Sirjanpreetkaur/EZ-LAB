@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { initialTree } from "../../mock/treeData";
 import TreeNode from "./TreeNode";
+import "../../styles/treeStyles.css";
 
 import {
   DndContext,

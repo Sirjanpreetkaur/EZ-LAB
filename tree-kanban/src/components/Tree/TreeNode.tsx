@@ -5,6 +5,7 @@ import {
   SortableContext,
   verticalListSortingStrategy
 } from "@dnd-kit/sortable";
+import "../../styles/treeStyles.css";
 
 const TreeNode = ({
   node,
@@ -35,11 +36,7 @@ const TreeNode = ({
 
   const toggleExpand = () => {
     if (notLoaded) loadChildren(node.id);
-
-    setExpanded({
-      ...expanded,
-      [node.id]: !expanded[node.id]
-    });
+    setExpanded({ ...expanded, [node.id]: !expanded[node.id] });
   };
 
   const handleAdd = () => {
@@ -57,73 +54,73 @@ const TreeNode = ({
 
   return (
     <li ref={setNodeRef} style={style}>
-      <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-
+      <div className="tree-node">
         <span
+          className="drag-handle"
           {...listeners}
           {...attributes}
-          style={{ cursor: "grab", userSelect: "none", padding: "2px" }}
         >
           ⠿
         </span>
 
         {notLoaded ? (
-          <span onClick={toggleExpand} style={{ cursor: "pointer" }}>▶</span>
+          <span className="tree-arrow" onClick={toggleExpand}>▶</span>
         ) : hasLoadedChildren ? (
-          <span onClick={toggleExpand} style={{ cursor: "pointer" }}>
+          <span className="tree-arrow" onClick={toggleExpand}>
             {expanded[node.id] ? "▼" : "▶"}
           </span>
         ) : (
-          <span style={{ width: "12px" }} />
+          <span className="tree-arrow"></span>
         )}
 
         {!editing ? (
           <span
+            className="tree-label"
             onDoubleClick={() => setEditing(true)}
-            style={{ cursor: "pointer" }}
           >
             {node.label}
           </span>
         ) : (
           <>
             <input
+              className="tree-edit-input"
               value={editValue}
               autoFocus
               onChange={(e) => setEditValue(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleEdit()}
             />
-            <button onClick={handleEdit}>✔</button>
-            <button onClick={() => setEditing(false)}>✖</button>
+            <button className="tree-btn" onClick={handleEdit}>✔</button>
+            <button className="tree-btn" onClick={() => setEditing(false)}>✖</button>
           </>
         )}
 
-        <button onClick={() => setShowInput(true)} style={{ fontSize: "10px" }}>+</button>
+        <button className="tree-btn" onClick={() => setShowInput(true)}>+</button>
 
         <button
+          className="tree-btn-delete"
           onClick={() => deleteNode(node.id)}
-          style={{ fontSize: "10px", color: "red" }}
         >
           🗑
         </button>
       </div>
 
       {showInput && (
-        <div style={{ marginLeft: "20px" }}>
+        <div className="add-box">
           <input
             value={value}
             autoFocus
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleAdd()}
           />
-          <button onClick={handleAdd}>Add</button>
-          <button onClick={() => setShowInput(false)}>Cancel</button>
+          <button className="tree-btn" onClick={handleAdd}>Add</button>
+          <button className="tree-btn" onClick={() => setShowInput(false)}>
+            Cancel
+          </button>
         </div>
       )}
 
       {loading[node.id] && (
-        <div style={{ marginLeft: "20px", color: "gray" }}>
-          Loading...
-        </div>
+        <div className="tree-loading">Loading...</div>
       )}
 
       {hasLoadedChildren && expanded[node.id] && (
@@ -131,7 +128,9 @@ const TreeNode = ({
           items={node.children.map((c) => c.id)}
           strategy={verticalListSortingStrategy}
         >
-          <ul style={{ marginLeft: "20px" }}>
+            <div className="tree-container">
+
+          <ul className="tree-children">
             {node.children.map((child) => (
               <TreeNode
                 key={child.id}
@@ -146,6 +145,7 @@ const TreeNode = ({
               />
             ))}
           </ul>
+          </div>
         </SortableContext>
       )}
     </li>

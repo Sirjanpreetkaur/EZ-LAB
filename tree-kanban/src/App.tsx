@@ -1,12 +1,28 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, NavLink } from "react-router-dom";
+import "./index.css";  
 import TreeView from "./components/Tree/TreeView";
 import KanbanBoard from "./components/Kanban/Kanban";
+
 
 function App() {
   return (
     <div className="app-cover">
-      <Link to="/tree" style={{ marginRight: 20 }}>Tree View</Link>
-      <Link to="/kanban">Kanban Board</Link>
+      <div className="tabs">
+        <NavLink
+          to="/tree"
+          className={({ isActive }) => (isActive ? "tab active" : "tab")}
+        >
+          Tree View
+        </NavLink>
+
+        <NavLink
+          to="/kanban"
+          className={({ isActive }) => (isActive ? "tab active" : "tab")}
+        >
+          Kanban Board
+        </NavLink>
+      </div>
+
       <Routes>
         <Route path="/tree" element={<TreeView />} />
         <Route path="/kanban" element={<KanbanBoard />} />
