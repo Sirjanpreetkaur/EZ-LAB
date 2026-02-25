@@ -23,6 +23,7 @@ function App() {
       </div>
 
       <Routes>
+        <Route path="*" element={<Navigate to="/tree" replace />} />
         <Route path="/" element={<Navigate to="/tree" replace />} />
         <Route path="/tree" element={<TreeView />} />
         <Route path="/kanban" element={<KanbanBoard />} />
